@@ -61,7 +61,7 @@ export default function Index() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: 'url(https://cdn.poehali.dev/projects/ea925d35-3fc7-451a-9c12-3a38163d14cb/files/ecb6b343-ccad-4954-8c11-463608f40b11.jpg)',
+            backgroundImage: 'url(https://cdn.poehali.dev/files/ebfbf80b-263b-4505-bd4f-b6b6579e31f4.jpg)',
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background"></div>
@@ -97,9 +97,9 @@ export default function Index() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { img: 'https://cdn.poehali.dev/projects/ea925d35-3fc7-451a-9c12-3a38163d14cb/files/ecb6b343-ccad-4954-8c11-463608f40b11.jpg', title: 'Зеркальный фасад' },
-            { img: 'https://cdn.poehali.dev/projects/ea925d35-3fc7-451a-9c12-3a38163d14cb/files/2353efb5-c4f4-4ef4-8420-932ddd47ca2d.jpg', title: 'Банный чан' },
-            { img: 'https://cdn.poehali.dev/projects/ea925d35-3fc7-451a-9c12-3a38163d14cb/files/8324a4fe-c603-4f4a-b2ec-8cf9048b4eae.jpg', title: 'Купольная беседка' },
+            { img: 'https://cdn.poehali.dev/files/ebfbf80b-263b-4505-bd4f-b6b6579e31f4.jpg', title: 'Зеркальный дом в лесу' },
+            { img: 'https://cdn.poehali.dev/files/79936053-65a5-4f9a-bf3c-78ea8c36ab7e.jpg', title: 'Купольная беседка' },
+            { img: 'https://cdn.poehali.dev/files/f3d76846-73e0-4fd0-8697-b2ae720012af.jpg', title: 'Вечерняя иллюминация' },
           ].map((item, idx) => (
             <Card key={idx} className="group overflow-hidden border-border hover:border-primary transition-all duration-300 animate-scale-in">
               <div className="relative h-80 overflow-hidden">
