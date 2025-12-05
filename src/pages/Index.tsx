@@ -9,6 +9,7 @@ import Icon from '@/components/ui/icon';
 export default function Index() {
   const [activeSection, setActiveSection] = useState('home');
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -32,9 +33,19 @@ export default function Index() {
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
+    setMobileMenuOpen(false);
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const menuItems = [
+    { id: 'home', label: 'Главная' },
+    { id: 'gallery', label: 'Галерея' },
+    { id: 'about', label: 'Описание' },
+    { id: 'pricing', label: 'Тарифы' },
+    { id: 'booking', label: 'Бронирование' },
+    { id: 'contacts', label: 'Контакты' },
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,26 +60,49 @@ export default function Index() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-primary">Зеркальный Дом</h1>
+            
             <div className="hidden md:flex gap-6">
-              {['home', 'gallery', 'about', 'pricing', 'booking', 'contacts'].map((section) => (
+              {menuItems.map((item) => (
                 <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
                   className={`text-sm font-medium transition-colors hover:text-primary ${
-                    activeSection === section ? 'text-primary' : 'text-muted-foreground'
+                    activeSection === item.id ? 'text-primary' : 'text-muted-foreground'
                   }`}
                 >
-                  {section === 'home' && 'Главная'}
-                  {section === 'gallery' && 'Галерея'}
-                  {section === 'about' && 'Описание'}
-                  {section === 'pricing' && 'Тарифы'}
-                  {section === 'booking' && 'Бронирование'}
-                  {section === 'contacts' && 'Контакты'}
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden w-10 h-10 flex items-center justify-center text-primary hover:bg-primary/10 rounded-sm transition-colors"
+            >
+              <Icon name={mobileMenuOpen ? 'X' : 'Menu'} size={24} />
+            </button>
+          </div>
+        </div>
+
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-sm border-b border-border animate-fade-in">
+            <div className="container mx-auto px-4 py-6 space-y-1">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`w-full text-left px-4 py-3 rounded-sm transition-all ${
+                    activeSection === item.id
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-foreground hover:bg-primary/10 hover:text-primary'
+                  }`}
+                >
+                  <span className="text-lg font-medium">{item.label}</span>
                 </button>
               ))}
             </div>
           </div>
-        </div>
+        )}
       </nav>
 
       <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
