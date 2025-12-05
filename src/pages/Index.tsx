@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import Icon from '@/components/ui/icon';
 
 export default function Index() {
   const [activeSection, setActiveSection] = useState('home');
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -15,6 +16,19 @@ export default function Index() {
     guests: '',
     message: ''
   });
+
+  const galleryImages = [
+    { img: 'https://cdn.poehali.dev/files/ebfbf80b-263b-4505-bd4f-b6b6579e31f4.jpg', title: 'Зеркальный дом в лесу' },
+    { img: 'https://cdn.poehali.dev/files/79936053-65a5-4f9a-bf3c-78ea8c36ab7e.jpg', title: 'Купольная беседка' },
+    { img: 'https://cdn.poehali.dev/files/f3d76846-73e0-4fd0-8697-b2ae720012af.jpg', title: 'Вечерняя иллюминация' },
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [galleryImages.length]);
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -95,25 +109,56 @@ export default function Index() {
           <h3 className="text-5xl font-bold mb-4">Галерея</h3>
           <p className="text-muted-foreground text-lg">Погрузитесь в атмосферу роскоши</p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            { img: 'https://cdn.poehali.dev/files/ebfbf80b-263b-4505-bd4f-b6b6579e31f4.jpg', title: 'Зеркальный дом в лесу' },
-            { img: 'https://cdn.poehali.dev/files/79936053-65a5-4f9a-bf3c-78ea8c36ab7e.jpg', title: 'Купольная беседка' },
-            { img: 'https://cdn.poehali.dev/files/f3d76846-73e0-4fd0-8697-b2ae720012af.jpg', title: 'Вечерняя иллюминация' },
-          ].map((item, idx) => (
-            <Card key={idx} className="group overflow-hidden border-border hover:border-primary transition-all duration-300 animate-scale-in">
-              <div className="relative h-80 overflow-hidden">
+        
+        <div className="relative max-w-5xl mx-auto">
+          <div className="relative h-[600px] overflow-hidden rounded-sm border-2 border-primary/30">
+            {galleryImages.map((item, idx) => (
+              <div
+                key={idx}
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  idx === currentSlide ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
                 <img
                   src={item.img}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                  <p className="text-xl font-semibold p-6 text-foreground">{item.title}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <h4 className="text-3xl font-bold text-foreground mb-2">{item.title}</h4>
+                    <div className="h-1 w-20 bg-primary"></div>
+                  </div>
                 </div>
               </div>
-            </Card>
-          ))}
+            ))}
+          </div>
+
+          <button
+            onClick={() => setCurrentSlide((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary/90 hover:bg-primary flex items-center justify-center text-primary-foreground transition-all"
+          >
+            <Icon name="ChevronLeft" size={24} />
+          </button>
+          
+          <button
+            onClick={() => setCurrentSlide((prev) => (prev + 1) % galleryImages.length)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-primary/90 hover:bg-primary flex items-center justify-center text-primary-foreground transition-all"
+          >
+            <Icon name="ChevronRight" size={24} />
+          </button>
+
+          <div className="flex justify-center gap-3 mt-8">
+            {galleryImages.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-2 rounded-full transition-all ${
+                  idx === currentSlide ? 'w-12 bg-primary' : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
